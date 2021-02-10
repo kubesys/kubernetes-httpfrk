@@ -1,7 +1,7 @@
 /**
  * Copyright (2018, ) Institute of Software, Chinese Academy of Sciences
  */
-package com.github.kubesys.tools.utils;
+package com.github.kubesys.httpfrk.utils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -99,7 +99,6 @@ public class ClassUtils implements ResourceLoaderAware {
 						try {
 							classes.add(Class.forName(metadataReader.getClassMetadata().getClassName()));
 						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
 						}
 					}
 				}

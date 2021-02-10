@@ -223,7 +223,7 @@ public abstract class HttpBodyHandler implements CommandLineRunner, ApplicationC
 				registered.add(service.getName());
 				
 				// 3. swagger support
-				swaggerAPI(serviceModule, service);
+				wrapperSwagger(serviceModule, service);
 				
 			
 			} else {
@@ -235,13 +235,15 @@ public abstract class HttpBodyHandler implements CommandLineRunner, ApplicationC
 		}
 	}
 
-	void swaggerAPI(String serviceModule, Method service) throws Exception {
+	void wrapperSwagger(String serviceModule, Method service) throws Exception {
 		
 		ServiceModelToSwagger2Mapper mapper= (ServiceModelToSwagger2Mapper) 
 										ctx.getBean("serviceModelToSwagger2MapperImpl");
 		DocumentationCache cache = (DocumentationCache) ctx.getBean("resourceGroupCache");
 		Documentation documentation = cache.documentationByGroup("default");
 		Swagger swagger = mapper.mapDocumentation(cache.documentationByGroup("default"));
+		
+		
 		Multimap<String, ApiListing> apiMap =  documentation.getApiListings();
 		ApiOperation apiOpt = fromApiOperation(serviceModule, service);
 		

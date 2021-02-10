@@ -29,8 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kubesys.httpfrk.utils.JSR303Utils;
-import com.github.kubesys.httpfrk.utils.JSR303Utils.ValidationResult;
+import com.github.kubesys.httpfrk.tools.Jsr303Tool;
+import com.github.kubesys.httpfrk.tools.Jsr303Tool.ValidationResult;
 import com.github.kubesys.httpfrk.utils.JavaUtils;
 import com.github.kubesys.httpfrk.utils.StringUtils;
 
@@ -59,6 +59,8 @@ public class HttpController implements ApplicationContextAware {
 	@Autowired
 	protected HandlerManager handlers;
 
+	@Autowired
+	protected Jsr303Tool jsr303;
 	
 	/**
 	 * app context
@@ -270,7 +272,7 @@ public class HttpController implements ApplicationContextAware {
 	 * @throws Exception                          exception
 	 */
 	protected void checkParameter(Object[] params, int i) throws Exception {
-		ValidationResult result = JSR303Utils.validateEntity(params[i]);
+		ValidationResult result = jsr303.validateEntity(params[i]);
 		if (result.isHasErrors()) {
 			throw new Exception(new ObjectMapper().writeValueAsString(result.getErrorMsg()));
 		}

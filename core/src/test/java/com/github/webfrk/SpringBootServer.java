@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.github.kubesys.httpfrk.HttpServer;
-import com.github.kubesys.httpfrk.core.HttpResponseWrapper;
 
 /**
  * @author wuheng@otcaix.iscas.ac.cn
@@ -53,16 +52,5 @@ public class SpringBootServer extends HttpServer {
 		return "com.github.webfrk.examples";
 	}
 
-	@Override
-	public HttpResponseWrapper getResponseWrapper() {
-		return new HttpResponseWrapper() {
-			
-			@Override
-			public String unwrap(String status, Object value) throws Exception {
-				return status + ":" + value.toString();
-			}
-		};
-	}
-	
 	
 }

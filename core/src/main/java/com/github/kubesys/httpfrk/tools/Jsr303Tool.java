@@ -1,7 +1,7 @@
 /**
  * Copyright (2019, ) Institute of Software, Chinese Academy of Sciences
  */
-package com.github.kubesys.httpfrk.utils;
+package com.github.kubesys.httpfrk.tools;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,20 +12,24 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import org.springframework.stereotype.Component;
+
+
 
 /**
  * @author  wuheng
- * @since   2019.2.20
+ * @since   2021.1.20
  */
-public class JSR303Utils {
+@Component
+public class Jsr303Tool {
 
 	/**********************************
 	 *  JSR 303
 	 **********************************/
 	
-	protected static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+	protected Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 	
-	public static <T> ValidationResult validateEntity(T obj) {
+	public <T> ValidationResult validateEntity(T obj) {
 		ValidationResult result = new ValidationResult();
 		Set<ConstraintViolation<T>> set = validator.validate(obj, Default.class);
 

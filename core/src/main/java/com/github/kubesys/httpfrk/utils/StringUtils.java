@@ -3,7 +3,6 @@
  */
 package com.github.kubesys.httpfrk.utils;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -44,16 +43,6 @@ public class StringUtils {
 		return (obj == null) ? true : false;
 	}
 	
-	
-	/**
-	 * @param method     method name
-	 * @return           service type name
-	 */
-	public static String getServiceType(Method method) {
-		String methodName = method.getName();
-		return methodName.substring(0, 
-				methodName.length() - "Request".length());
-	}
 	
 	public static JsonNode toJsonNode(Map<String, String> map) {
 		ObjectNode on = new ObjectMapper().createObjectNode();
