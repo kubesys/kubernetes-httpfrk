@@ -4,7 +4,6 @@
 package com.github.webfrk;
 
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -52,5 +51,4 @@ public class SpringBootServer extends HttpServer {
 		return "com.github.webfrk.examples";
 	}
 
-	
 }
