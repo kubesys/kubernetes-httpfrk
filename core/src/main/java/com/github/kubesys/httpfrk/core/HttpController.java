@@ -29,10 +29,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kubesys.httpfrk.tools.Jsr303Tool;
-import com.github.kubesys.httpfrk.tools.Jsr303Tool.ValidationResult;
-import com.github.kubesys.httpfrk.utils.JavaUtils;
-import com.github.kubesys.httpfrk.utils.StringUtils;
+import com.github.kubesys.httpfrk.utils.JavaUtil;
+import com.github.kubesys.httpfrk.utils.JSR303Util;
+import com.github.kubesys.httpfrk.utils.JSONUtil;
+import com.github.kubesys.httpfrk.utils.JSR303Util.ValidationResult;
 
 import io.swagger.annotations.ApiParam;
 
@@ -60,7 +60,7 @@ public class HttpController implements ApplicationContextAware {
 	protected HandlerManager handlers;
 
 	@Autowired
-	protected Jsr303Tool jsr303;
+	protected JSR303Util jsr303;
 	
 	/**
 	 * app context
@@ -141,7 +141,7 @@ public class HttpController implements ApplicationContextAware {
 			"/**/get*", "/**/list*", "/**/query*", "/**/describe*", "/**/retrieve*", "/**/echo*", "/**/exec*" })
 	public @ResponseBody String retrieveTypeGetRequest(HttpServletRequest request,
 			@RequestParam(required = false) Map<String, String> body) throws Exception {
-		return doResponse(getServletPath(request), StringUtils.toJsonNode(body));
+		return doResponse(getServletPath(request), JSONUtil.toJsonNode(body));
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class HttpController implements ApplicationContextAware {
 			String name = targetMethod.getParameters()[i].getName();
 			if (!body.has(name)) {
 				String typeName = targetMethod.getParameters()[i].getType().getName();
-				if (JavaUtils.isPrimitive(typeName) && !typeName.equals(String.class.getName())) {
+				if (JavaUtil.isPrimitive(typeName) && !typeName.equals(String.class.getName())) {
 					params[i] = 0;
 				} else {
 					params[i] = null;

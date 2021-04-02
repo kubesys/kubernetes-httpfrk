@@ -1,7 +1,7 @@
 /**
  * Copyright (2019, ) Institute of Software, Chinese Academy of Sciences
  */
-package com.github.kubesys.httpfrk.tools;
+package com.github.kubesys.httpfrk.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author  wuheng
- * @since   2021.1.20
+ * @since   2021.4.2
  */
 @Component
-public class Jsr303Tool {
+public class JSR303Util {
 
 	/**********************************
 	 *  JSR 303

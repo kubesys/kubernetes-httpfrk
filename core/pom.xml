@@ -6,7 +6,7 @@
 
 	<groupId>com.github.kubesys</groupId>
 	<artifactId>kubernetes-httpfrk-core</artifactId>
-	<version>1.24.0</version>
+	<version>1.25.0</version>
 	<packaging>jar</packaging>
 
 	<name>kubernetes-httpfrk</name>
@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.2</version>
+		<version>2.4.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 

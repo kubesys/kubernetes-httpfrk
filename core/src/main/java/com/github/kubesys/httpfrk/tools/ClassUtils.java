@@ -1,7 +1,7 @@
 /**
  * Copyright (2018, ) Institute of Software, Chinese Academy of Sciences
  */
-package com.github.kubesys.httpfrk.utils;
+package com.github.kubesys.httpfrk.tools;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -32,6 +32,11 @@ import org.springframework.util.SystemPropertyUtils;
  */
 public class ClassUtils implements ResourceLoaderAware {
 
+	/***********************************************************
+	 * 
+	 * local classes
+	 *
+	 ************************************************************/
 	private final List<TypeFilter> includeFilters = new LinkedList<TypeFilter>();
 	private final List<TypeFilter> excludeFilters = new LinkedList<TypeFilter>();
 
@@ -122,4 +127,5 @@ public class ClassUtils implements ResourceLoaderAware {
 		}
 		return false;
 	}
+	
 }

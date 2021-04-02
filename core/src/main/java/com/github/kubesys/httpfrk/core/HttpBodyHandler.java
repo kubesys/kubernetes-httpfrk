@@ -15,7 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.github.kubesys.httpfrk.tools.SwaggerTool;
+import com.github.kubesys.httpfrk.adapters.SwaggerAdapter;
 
 /**
  * @author wuheng
@@ -41,7 +41,7 @@ public abstract class HttpBodyHandler implements CommandLineRunner, ApplicationC
 	protected static ApplicationContext ctx;
 	
 	@Autowired
-	protected SwaggerTool swaggerTool;
+	protected SwaggerAdapter swaggerTool;
 	
 	/**
 	 * registered
@@ -104,7 +104,6 @@ public abstract class HttpBodyHandler implements CommandLineRunner, ApplicationC
 		// It's impossible to exist duplicated services so and we unsupport polymorphism
 		
 		String serviceModule = getServiceModule(classname);
-		swaggerTool.addTag(serviceModule);
 		
 		
 		for (Method service : getClass().getDeclaredMethods()) {

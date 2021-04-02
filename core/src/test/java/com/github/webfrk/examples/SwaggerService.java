@@ -28,15 +28,14 @@ public class SwaggerService extends HttpBodyHandler {
 	}
 	
 	@ApiOperation(value = "desc of method", notes = "")
-	@RequestMapping(value = "echoHello1", method = RequestMethod.GET)
 	public Object echoHello1( /* 参数注解 */
 			@ApiParam(value = "desc of name", required = true) @RequestParam String name,
 			@ApiParam(value = "desc of habit", required = true) @RequestParam String habit) {
-		return "Hello " + name + "!";
+		return name + ":" + habit;
 	}
 	
 	@ApiOperation(value = "desc of method", notes = "")
-	@RequestMapping(value = "echoHello2", method = RequestMethod.GET)
+	@RequestMapping(value = "echoHello2", method = RequestMethod.POST)
 	public Object echoHello2(@ApiParam(value = "desc of user", required = true) @RequestParam User user) {
 		return "Hello, " + user.getName();
 	}

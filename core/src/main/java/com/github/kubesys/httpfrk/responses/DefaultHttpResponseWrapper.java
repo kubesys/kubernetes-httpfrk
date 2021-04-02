@@ -4,7 +4,7 @@
 package com.github.kubesys.httpfrk.responses;
 
 import com.github.kubesys.httpfrk.core.HttpResponseWrapper;
-import com.github.kubesys.httpfrk.utils.StringUtils;
+import com.github.kubesys.httpfrk.utils.JSONUtil;
 
 /**
  * @author  wuheng
@@ -20,7 +20,7 @@ public class DefaultHttpResponseWrapper implements HttpResponseWrapper {
 	public String unwrap(String status, Object value) throws Exception {
 		HttpResponse response = "fail".equals(status) ?
 				new HttpResponse(50000, value) : new HttpResponse(20000, value);
-		return StringUtils.toJSONString(response);
+		return JSONUtil.toJSONString(response);
 	}
 
 	public static class HttpResponse {
