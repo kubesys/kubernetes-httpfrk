@@ -14,15 +14,19 @@ import java.util.Set;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.kubesys.httpfrk.core.HttpController;
+import com.github.kubesys.httpfrk.utils.JavaUtil;
 import com.github.kubesys.httpfrk.utils.SwaggerUtil;
-import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Swagger;
-import springfox.documentation.schema.Example;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.schema.ModelReference;
 import springfox.documentation.service.ApiDescription;
@@ -42,17 +46,12 @@ import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 @Component
 public class SwaggerAdapter {
 
-	protected final static Map<String, List<String>> mapper = new HashMap<>();
+	static Map<String, Set<HttpMethod>> httpMapper = new HashMap<>();
 	
 	/**
 	 * response
 	 */
 	protected final static Set<ResponseMessage> response =  new HashSet<>();
-	
-	/**
-	 * example
-	 */
-	protected final static Multimap<String, Example> examples = LinkedHashMultimap.create();
 	
 	/**
 	 * tags
@@ -62,15 +61,38 @@ public class SwaggerAdapter {
 
 	static {
 		
+		for (Method m : HttpController.class.getMethods()) {
+			RequestMapping annotation = m.getAnnotation(RequestMapping.class);
+			if (annotation != null && annotation.value() != null) {
+				for (String str : annotation.value()) {
+					int idx = str.lastIndexOf("/");
+					String prefix = str.substring(idx + 1, idx + 4);
+					for (RequestMethod req : annotation.method()) {
+						Set<HttpMethod> list = httpMapper.get(prefix);
+						list = (list == null) ? new HashSet<>() : list;
+						if (req.name().equals("GET")) {
+							list.add(HttpMethod.GET);
+						} else if (req.name().equals("PUT")) {
+							list.add(HttpMethod.PUT);
+						} else if (req.name().equals("DELETE")) {
+							list.add(HttpMethod.DELETE);
+						} else {
+							list.add(HttpMethod.POST);
+						}
+						httpMapper.put(prefix, list);
+					}
+				}
+			}
+		}
+		
 		ModelReference responseModel = new ModelRef("object");
 		@SuppressWarnings("rawtypes")
-		ResponseMessage msg = new ResponseMessage(200, 
+		ResponseMessage msg = new ResponseMessage(20000, 
 								"code 20000, 50000 mean a right or wrong response, respectively", 
 								responseModel , 
 								new HashMap<>(), 
 								new ArrayList<VendorExtension> ());
 		response.add(msg);
-		
 		
 	}
 
@@ -83,6 +105,7 @@ public class SwaggerAdapter {
 		
 		ServiceModelToSwagger2Mapper mapper= (ServiceModelToSwagger2Mapper) 
 										ctx.getBean("serviceModelToSwagger2MapperImpl");
+		
 		DocumentationCache cache = (DocumentationCache) ctx.getBean("resourceGroupCache");
 		
 		Swagger swagger = mapper.mapDocumentation(cache.documentationByGroup("default"));
@@ -96,11 +119,31 @@ public class SwaggerAdapter {
 		String path = "/" + serviceModule + "/" + service.getName();
 		
 		List<ApiDescription> apis = new ArrayList<>();
-		apis.add(new ApiDescription("default", path, apiOpt.value(), 
+		
+		String shortName = service.getName().substring(0, 3);
+		
+		Set<HttpMethod> httpSet = httpMapper.get(shortName);
+		
+		ObjectNode json = new ObjectMapper().createObjectNode();
+		
+		HttpMethod http = httpSet.contains(HttpMethod.GET) ? HttpMethod.GET : HttpMethod.POST;
+		
+		for (java.lang.reflect.Parameter param : service.getParameters()) {
+			if (JavaUtil.isPrimitive(param.getType())) {
+				json.put(param.getName(), param.getType().getName());
+			} else {
+				http = HttpMethod.POST;
+				json.put(param.getName(), new ObjectMapper().writeValueAsString(param.getType().newInstance()));
+			}
+		}
+		
+		apis.add(new ApiDescription(http.name(), path, apiOpt.value(), 
 					SwaggerUtil.toOperation(
 							serviceModule + "." + service.getName(), 
-							HttpMethod.GET, apiOpt.value(), tags, 
-							SwaggerUtil.toApiParam(service), response), 
+							http, apiOpt.value(), tags, 
+							SwaggerUtil.toApiParam(service, 
+									(http == HttpMethod.GET) ? "query" : "body" , 
+									(http == HttpMethod.GET) ? null : json), response), 
 					false));
 		
 		apiMap.put(path, SwaggerUtil.toApiListing(
@@ -108,5 +151,5 @@ public class SwaggerAdapter {
 						getClass().getDeclaredAnnotation(Api.class)));
 		
 	}
-
+	
 }

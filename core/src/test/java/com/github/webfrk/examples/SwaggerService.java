@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiParam;
 public class SwaggerService extends HttpBodyHandler {
 	
 	@ApiOperation(value = "desc of method", notes = "")
-	@RequestMapping(value = "echoHello", method = RequestMethod.GET)
+	@RequestMapping(value = "echoHello", method = RequestMethod.POST)
 	public Object echoHello( /* 参数注解 */ @ApiParam(value = "desc of param", required = true) @RequestParam String name) {
 		return "Hello " + name + "!";
 	}

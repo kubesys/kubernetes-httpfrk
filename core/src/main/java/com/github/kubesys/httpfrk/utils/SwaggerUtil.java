@@ -13,7 +13,9 @@ import java.util.Set;
 
 import org.springframework.http.HttpMethod;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
 
 import io.swagger.annotations.Api;
@@ -21,6 +23,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.models.Swagger;
 import springfox.documentation.builders.ApiListingBuilder;
 import springfox.documentation.builders.OperationBuilder;
+import springfox.documentation.schema.Example;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiDescription;
 import springfox.documentation.service.ApiListing;
@@ -81,7 +84,7 @@ public class SwaggerUtil{
 	 *
 	 ************************************************************/
 	@SuppressWarnings("rawtypes")
-	public static List<Parameter> toApiParam(Method service) {
+	public static List<Parameter> toApiParam(Method service, String queryOrBody,  ObjectNode json) {
 		
 		List<Parameter> parameters = new ArrayList<>();
 		
@@ -96,9 +99,9 @@ public class SwaggerUtil{
 						apiParam.defaultValue(), apiParam.required(), 
 						apiParam.allowMultiple(), apiParam.allowEmptyValue(), 
 						toModelRef(type), null, null, 
-						"query", apiParam.access(), 
+						queryOrBody, apiParam.access(), 
 						apiParam.hidden(), null, apiParam.collectionFormat(), 
-						0, null, LinkedHashMultimap.create(), 
+						0, json != null ? json : "", toExamples(json), 
 						new ArrayList<VendorExtension>());
 				parameters.add(parameter);
 			}
@@ -138,6 +141,14 @@ public class SwaggerUtil{
 				.description(apiDesc != null ? apiDesc.value() : "")
 				.build();
 		return apiListing;
+	}
+	
+	public static Multimap<String, Example> toExamples(ObjectNode json) {
+		Multimap<String, Example> examples = LinkedHashMultimap.create();
+		if (json != null) {
+			examples.put("application/json", new Example("application/json", json.toPrettyString()));
+		}
+		return examples;
 	}
 	
 	public static Set<String> toProduces() {
