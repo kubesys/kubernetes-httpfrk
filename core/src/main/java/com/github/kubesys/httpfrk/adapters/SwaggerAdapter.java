@@ -28,7 +28,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Swagger;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.schema.ModelReference;
 import springfox.documentation.service.ApiDescription;
 import springfox.documentation.service.ApiListing;
 import springfox.documentation.service.Documentation;
@@ -43,6 +42,7 @@ import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
  * @author  wuheng
  * @since   2021.1.20
  */
+@SuppressWarnings("rawtypes")
 @Component
 public class SwaggerAdapter {
 
@@ -85,14 +85,37 @@ public class SwaggerAdapter {
 			}
 		}
 		
-		ModelReference responseModel = new ModelRef("object");
-		@SuppressWarnings("rawtypes")
-		ResponseMessage msg = new ResponseMessage(20000, 
-								"code 20000, 50000 mean a right or wrong response, respectively", 
-								responseModel , 
+		ResponseMessage msg200 = new ResponseMessage(200, 
+								"OK, the response format is { \"code\": 20000/50000, \"message\": \"error\", \"data\": \"data\" }\n"
+								+ "if the code is 20000, message is null; otherwise, the message is the error info.", 
+								new ModelRef("object") , 
 								new HashMap<>(), 
 								new ArrayList<VendorExtension> ());
-		response.add(msg);
+		ResponseMessage msg201 = new ResponseMessage(201, 
+				"Created", 
+				new ModelRef("object") , 
+				new HashMap<>(), 
+				new ArrayList<VendorExtension> ());
+		ResponseMessage msg401 = new ResponseMessage(401, 
+				"Unauthorized", 
+				new ModelRef("object") , 
+				new HashMap<>(), 
+				new ArrayList<VendorExtension> ());
+		ResponseMessage msg402 = new ResponseMessage(402, 
+				"Forbidden", 
+				new ModelRef("object") , 
+				new HashMap<>(), 
+				new ArrayList<VendorExtension> ());
+		ResponseMessage msg403 = new ResponseMessage(403, 
+				"Not Found", 
+				new ModelRef("object") , 
+				new HashMap<>(), 
+				new ArrayList<VendorExtension> ());
+		response.add(msg200);
+		response.add(msg201);
+		response.add(msg401);
+		response.add(msg402);
+		response.add(msg403);
 		
 	}
 

@@ -4,6 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import com.github.kubesys.httpfrk.core.HttpBodyHandler;
 import com.github.kubesys.tools.annotations.ServiceDefinition;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,12 +36,13 @@ public class SwaggerService extends HttpBodyHandler {
 		return name + ":" + habit;
 	}
 	
-	@ApiOperation(value = "desc of method", notes = "")
-	@RequestMapping(value = "echoHello2", method = RequestMethod.POST)
-	public Object echoHello2(@ApiParam(value = "desc of user", required = true) @RequestParam User user) {
+	@ApiOperation(value = "desc of method", notes = "notes")
+	@PostMapping(value = "echoHello2")
+	public Object echoHello2(@ApiParam(value = "desc of user", type = "body", required = true, example = "asf") @RequestParam User user) {
 		return "Hello, " + user.getName();
 	}
 	
+	@ApiModel(value = "user")
 	public static class User {
 		
 		@ApiModelProperty(notes = "First name of the person.", example = "John", required = true, position = 1)

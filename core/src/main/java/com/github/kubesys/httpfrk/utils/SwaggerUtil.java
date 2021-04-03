@@ -95,12 +95,16 @@ public class SwaggerUtil{
 			if (apiParam != null) {
 				String type = param.getParameterizedType().getTypeName();
 				Parameter parameter = new Parameter(
-						param.getName(), apiParam.value(), 
-						apiParam.defaultValue(), apiParam.required(), 
+						param.getName(), 
+						queryOrBody.equals("query") ? apiParam.value() 
+								: apiParam.value() + "\n请求格式为:\n" + (json != null ? json.toPrettyString() : ""), 
+						apiParam.defaultValue(), 
+						apiParam.required(), 
 						apiParam.allowMultiple(), apiParam.allowEmptyValue(), 
 						toModelRef(type), null, null, 
 						queryOrBody, apiParam.access(), 
-						apiParam.hidden(), null, apiParam.collectionFormat(), 
+						apiParam.hidden(), null, 
+						apiParam.collectionFormat(), 
 						0, json != null ? json : "", toExamples(json), 
 						new ArrayList<VendorExtension>());
 				parameters.add(parameter);
@@ -146,7 +150,7 @@ public class SwaggerUtil{
 	public static Multimap<String, Example> toExamples(ObjectNode json) {
 		Multimap<String, Example> examples = LinkedHashMultimap.create();
 		if (json != null) {
-			examples.put("application/json", new Example("application/json", json.toPrettyString()));
+			examples.put("default", new Example("application/json", json));
 		}
 		return examples;
 	}
