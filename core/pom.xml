@@ -6,7 +6,7 @@
 
 	<groupId>com.github.kubesys</groupId>
 	<artifactId>kubernetes-httpfrk-core</artifactId>
-	<version>1.25.0</version>
+	<version>1.30.0</version>
 	<packaging>jar</packaging>
 
 	<name>kubernetes-httpfrk</name>

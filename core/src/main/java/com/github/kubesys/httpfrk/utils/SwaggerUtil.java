@@ -88,27 +88,51 @@ public class SwaggerUtil{
 		
 		List<Parameter> parameters = new ArrayList<>();
 		
-		for (java.lang.reflect.Parameter param : service.getParameters()) {
-			
-			ApiParam apiParam = param.getAnnotation(ApiParam.class);
-			
-			if (apiParam != null) {
-				String type = param.getParameterizedType().getTypeName();
-				Parameter parameter = new Parameter(
-						param.getName(), 
-						queryOrBody.equals("query") ? apiParam.value() 
-								: apiParam.value() + "\n请求格式为:\n" + (json != null ? json.toPrettyString() : ""), 
-						apiParam.defaultValue(), 
-						apiParam.required(), 
-						apiParam.allowMultiple(), apiParam.allowEmptyValue(), 
-						toModelRef(type), null, null, 
-						queryOrBody, apiParam.access(), 
-						apiParam.hidden(), null, 
-						apiParam.collectionFormat(), 
-						0, json != null ? json : "", toExamples(json), 
-						new ArrayList<VendorExtension>());
-				parameters.add(parameter);
+		if (queryOrBody.equals("query")) {
+			for (java.lang.reflect.Parameter param : service.getParameters()) {
+				
+				ApiParam apiParam = param.getAnnotation(ApiParam.class);
+				
+				if (apiParam != null) {
+					String type = param.getParameterizedType().getTypeName();
+					Parameter parameter = new Parameter(
+							param.getName(), 
+							apiParam.value() , 
+							apiParam.defaultValue(), 
+							apiParam.required(), 
+							apiParam.allowMultiple(), 
+							apiParam.allowEmptyValue(), 
+							toModelRef(type), 
+							null, 
+							null, 
+							"query", 
+							apiParam.access(), 
+							apiParam.hidden(), null, 
+							apiParam.collectionFormat(), 
+							0, "", toExamples(json), 
+							new ArrayList<VendorExtension>());
+					parameters.add(parameter);
+				}
 			}
+		} else {
+			Parameter parameter = new Parameter(
+					"json", 
+					"请求格式为:\n" + json.toPrettyString(),
+					"", 
+					true, 
+					true, 
+					false, 
+					toModelRef("object"), 
+					null, 
+					null, 
+					"body", 
+					"", 
+					false, 
+					null, 
+					"", 
+					0, json, toExamples(json), 
+					new ArrayList<VendorExtension>());
+			parameters.add(parameter);
 		}
 		return parameters;
 	}

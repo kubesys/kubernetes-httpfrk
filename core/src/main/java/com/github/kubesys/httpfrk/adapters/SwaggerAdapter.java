@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.kubesys.httpfrk.core.HttpController;
@@ -152,26 +153,41 @@ public class SwaggerAdapter {
 		HttpMethod http = httpSet.contains(HttpMethod.GET) ? HttpMethod.GET : HttpMethod.POST;
 		
 		for (java.lang.reflect.Parameter param : service.getParameters()) {
-			if (JavaUtil.isPrimitive(param.getType())) {
+			String typename = param.getType().getName();
+			if (JavaUtil.isPrimitive(typename)) {
 				json.put(param.getName(), param.getType().getName());
 			} else {
 				http = HttpMethod.POST;
-				json.put(param.getName(), new ObjectMapper().writeValueAsString(param.getType().newInstance()));
+				if (JavaUtil.isList(param.getType().getName())
+						|| JavaUtil.isSet(param.getType().getName())) {
+					json.put(param.getName(), new ObjectMapper().writeValueAsString(new ArrayList<String>()));
+				} else if (JavaUtil.isMap(param.getType().getName())) {
+					json.put(param.getName(), new ObjectMapper().writeValueAsString(new HashMap<String, String>()));
+				} else {
+					if (param.getType().getName().equals(JsonNode.class.getName())) {
+						json.set(param.getName(), new ObjectMapper().createObjectNode());
+					} else {
+						json.put(param.getName(), new ObjectMapper().writeValueAsString(param.getType().newInstance()));
+					}
+				}
 			}
 		}
 		
-		apis.add(new ApiDescription(http.name(), path, apiOpt.value(), 
-					SwaggerUtil.toOperation(
-							serviceModule + "." + service.getName(), 
-							http, apiOpt.value(), tags, 
-							SwaggerUtil.toApiParam(service, 
-									(http == HttpMethod.GET) ? "query" : "body" , 
-									(http == HttpMethod.GET) ? null : json), response), 
-					false));
-		
-		apiMap.put(path, SwaggerUtil.toApiListing(
-						serviceModule, swagger, apis, 
-						getClass().getDeclaredAnnotation(Api.class)));
+		try {
+			apis.add(new ApiDescription(http.name(), path, apiOpt.value(), 
+						SwaggerUtil.toOperation(
+								serviceModule + "." + service.getName(), 
+								http, apiOpt.value(), tags, 
+								SwaggerUtil.toApiParam(service, 
+										(http == HttpMethod.GET) ? "query" : "body",
+										json), response), 
+						false));
+			
+			apiMap.put(path, SwaggerUtil.toApiListing(
+							serviceModule, swagger, apis, 
+							getClass().getDeclaredAnnotation(Api.class)));
+		} catch (Exception ex) {
+		}
 		
 	}
 	
