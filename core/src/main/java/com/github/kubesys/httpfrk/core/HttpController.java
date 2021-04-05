@@ -190,6 +190,7 @@ public class HttpController implements ApplicationContextAware {
 
 		m_logger.info("Begin to deal with " + servletPath);
 
+		long start = System.currentTimeMillis();
 		Method hanlder = handlers.geHandler(servletPath);
 		try {
 
@@ -211,8 +212,11 @@ public class HttpController implements ApplicationContextAware {
 				}
 			}
 			throw new Exception(sb.toString());
+		} finally {
+			long end = System.currentTimeMillis();
+			m_logger.info(servletPath + "," + (end - start) + "ms");
 		}
-
+		
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class DefaultHttpResponseWrapper implements HttpResponseWrapper {
 	@Override
 	public String unwrap(String status, Object value) throws Exception {
 		HttpResponse response = "fail".equals(status) ?
-				new HttpResponse(50000, value) : new HttpResponse(20000, value);
+				new HttpResponse(50000, value.toString()) : new HttpResponse(20000, value);
 		return JSONUtil.toJSONString(response);
 	}
 
