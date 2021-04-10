@@ -5,8 +5,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.kubesys.httpfrk.core.HttpBodyHandler;
@@ -24,21 +24,20 @@ import io.swagger.annotations.ApiParam;
 public class SwaggerService extends HttpBodyHandler {
 	
 	@ApiOperation(value = "desc of method", notes = "")
-	@RequestMapping(value = "echoHello", method = RequestMethod.POST)
 	public Object echoHello( /* 参数注解 */ @ApiParam(value = "desc of param", required = true) @RequestParam String name) {
 		return "Hello " + name + "!";
 	}
 	
 	@ApiOperation(value = "desc of method", notes = "")
-	public Object echoHello1( /* 参数注解 */
+	public String echoHello1( /* 参数注解 */
 			@ApiParam(value = "desc of name", required = true) @RequestParam String name,
-			@ApiParam(value = "desc of habit", required = true) @RequestParam String habit) {
-		return name + ":" + habit;
+			@ApiParam(value = "desc of habit", required = true) @RequestParam String habit) throws Exception {
+		throw new Exception("assddd");
 	}
 	
 	@ApiOperation(value = "desc of method", notes = "notes")
-	@PostMapping(value = "echoHello2")
-	public Object echoHello2(@ApiParam(value = "desc of user", type = "body", required = true, example = "asf") @RequestParam User user) {
+	@PostMapping
+	public Object echoHello2(@ApiParam(value = "desc of user", type = "body", required = true, example = "asf") @RequestBody User user) {
 		return "Hello, " + user.getName();
 	}
 	

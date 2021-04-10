@@ -156,6 +156,7 @@ public class SwaggerUtil{
 	}
 
 	public static ApiListing toApiListing(String serviceModule, Swagger swagger, List<ApiDescription> apis, Api apiDesc) {
+		
 		ApiListing apiListing =  new ApiListingBuilder(new Ordering<ApiDescription>( ) {
 		
 			@Override
@@ -174,7 +175,7 @@ public class SwaggerUtil{
 	public static Multimap<String, Example> toExamples(ObjectNode json) {
 		Multimap<String, Example> examples = LinkedHashMultimap.create();
 		if (json != null) {
-			examples.put("default", new Example("application/json", json));
+			examples.put("json", new Example("application/json", json));
 		}
 		return examples;
 	}
