@@ -6,32 +6,29 @@ import javax.validation.constraints.Size;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.kubesys.httpfrk.core.HttpBodyHandler;
 import com.github.kubesys.tools.annotations.ServiceDefinition;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-@Api(value = "这个有啥用")
-@RequestMapping("/app")
 @ServiceDefinition
 public class SwaggerService extends HttpBodyHandler {
 	
 	@ApiOperation(value = "desc of method", notes = "")
-	public Object echoHello( /* 参数注解 */ @ApiParam(value = "desc of param", required = true) @RequestParam String name) {
+	public Object echoHello( /* 参数注解 */ @ApiParam(value = "desc of param", required = true) 
+			@RequestParam @Min(10) @Max(20) String name) {
 		return "Hello " + name + "!";
 	}
 	
 	@ApiOperation(value = "desc of method", notes = "")
 	public String echoHello1( /* 参数注解 */
 			@ApiParam(value = "desc of name", required = true) @RequestParam String name,
-			@ApiParam(value = "desc of habit", required = true) @RequestParam String habit) throws Exception {
+			@ApiParam(value = "desc of habit") @RequestParam String habit) throws Exception {
 		throw new Exception("assddd");
 	}
 	

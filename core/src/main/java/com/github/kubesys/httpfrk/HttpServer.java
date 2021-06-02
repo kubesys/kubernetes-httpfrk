@@ -39,15 +39,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 
 @Configuration
-@EnableSwagger2
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableSwagger2
 public abstract class HttpServer implements WebMvcConfigurer {
-
-	/**
-	 * m_logger
-	 */
-	public static final Logger m_logger = Logger.getLogger(HttpServer.class.getName());
 
 	/**
 	 * program entry point
@@ -57,6 +52,11 @@ public abstract class HttpServer implements WebMvcConfigurer {
 	public static void main(String[] args) {
 		SpringApplication.run(HttpServer.class, args);
 	}
+	
+	/**
+	 * m_logger
+	 */
+	public static final Logger m_logger = Logger.getLogger(HttpServer.class.getName());
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

@@ -6,7 +6,7 @@
 
 	<groupId>com.github.kubesys</groupId>
 	<artifactId>kubernetes-httpfrk-core</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>kubernetes-httpfrk</name>
@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.4</version>
+		<version>2.5.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -61,13 +61,13 @@
 		<!-- Required Tools -->
 		<!-- ######################################################## -->
 
-		
+
 		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
 		<dependency>
-		    <groupId>org.hibernate.validator</groupId>
-		    <artifactId>hibernate-validator</artifactId>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
 		</dependency>
-		
+
 
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
@@ -93,7 +93,7 @@
 			</properties>
 		</profile>
 	</profiles>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>

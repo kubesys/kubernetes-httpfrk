@@ -5,9 +5,12 @@ package com.github.webfrk;
 
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.github.kubesys.httpfrk.HttpServer;
+
 
 /**
  * @author wuheng@otcaix.iscas.ac.cn
@@ -24,8 +27,9 @@ import com.github.kubesys.httpfrk.HttpServer;
 @ComponentScan(basePackages = {
 		"com.github.kubesys.httpfrk",
 		"com.github.webfrk.examples" })
-
-public class SpringBootServer extends HttpServer {
+@SpringBootApplication
+@EnableAutoConfiguration
+public class SpringBootServer extends HttpServer  {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootServer.class, args);

@@ -35,7 +35,8 @@ public final class HandlerManager  {
 	 */
 	public boolean addHandler(String serviceModule, Method serviceName) {
 		try {
-			servletHandlers.put(serviceModule + "/" + serviceName.getName(), serviceName);
+			servletHandlers.put(serviceModule + "/" + 
+					serviceName.getName(), serviceName);
 			return true;
 		} catch (Exception ex) {
 			return false;

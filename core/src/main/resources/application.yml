@@ -6,3 +6,4 @@ server:
     
 swagger:
   enabled: true
+  

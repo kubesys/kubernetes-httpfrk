@@ -36,6 +36,12 @@ public class MvcMockTest  {
 	
 	public final static String VALID_GET_REQUEST_PATH = "/mock/listMock";
 	
+	public final static String LESS_THAN_MIN_SIZE = "ab";
+	
+	public final static String GREAT_THAN_MAX_SIZE = "abccccccccc";
+	
+	public final static String VALID_SIZE = "abc";
+	
 	@Autowired
 	private MockMvc mvc;
 
@@ -43,7 +49,9 @@ public class MvcMockTest  {
 	public void testInvalidGetRequestBody() throws Exception {
 		@SuppressWarnings("deprecation")
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get(
-							INVALID_GET_REQUEST_PATH).accept(MediaType.APPLICATION_JSON_UTF8);
+							INVALID_GET_REQUEST_PATH)
+				.param("name", LESS_THAN_MIN_SIZE)
+				.accept(MediaType.APPLICATION_JSON_UTF8);
 		mvc.perform(builder)
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("code").value(HttpConstants.HTTP_RESPONSE_STATUS_FAILED));
