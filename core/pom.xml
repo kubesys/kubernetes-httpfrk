@@ -4,18 +4,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.kubesys</groupId>
-	<artifactId>kubernetes-httpfrk-core</artifactId>
-	<version>2.1.0</version>
+	<groupId>io.github.kubesys</groupId>
+	<artifactId>httpfrk-core</artifactId>
+	<version>2.2.0</version>
 	<packaging>jar</packaging>
 
-	<name>kubernetes-httpfrk</name>
-	<description>kubernetes-httpfrk-core</description>
+	<name>httpfrk-core</name>
+	<description>httpfrk-core</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.0</version>
+		<version>2.5.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -93,67 +93,8 @@
 			</properties>
 		</profile>
 	</profiles>
-
+	
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.asciidoctor</groupId>
-					<artifactId>asciidoctor-maven-plugin</artifactId>
-					<version>1.5.7</version>
-					<executions>
-						<execution>
-							<id>generate-docs</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>process-asciidoc</goal>
-							</goals>
-							<configuration>
-								<backend>html</backend>
-								<doctype>book</doctype>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-install-plugin
-										</artifactId>
-										<versionRange>
-											[2.3.1,)
-										</versionRange>
-										<goals>
-											<goal>install-file</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -237,7 +178,7 @@
 			<!--source -->
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -250,7 +191,7 @@
 			<!--javadoc -->
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.4</version>
+				<version>3.2.0</version>
 				<configuration>
 					<charset>UTF-8</charset>
 				</configuration>
@@ -265,4 +206,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

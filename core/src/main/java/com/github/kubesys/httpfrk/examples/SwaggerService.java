@@ -1,4 +1,4 @@
-package com.github.webfrk.examples;
+package com.github.kubesys.httpfrk.examples;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

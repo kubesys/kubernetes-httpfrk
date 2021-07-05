@@ -57,6 +57,18 @@ public class MvcMockTest  {
 				.andExpect(jsonPath("code").value(HttpConstants.HTTP_RESPONSE_STATUS_FAILED));
 	}
 	
-
 	
+	@Test
+	public void testValidPostRequestBody() throws Exception {
+		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
+				.post("/mock/listMock")
+				.content("jsonStyle")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON);
+		mvc.perform(builder)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("result.sucess").value(true));
+	}
+	
+
 }
